@@ -13,6 +13,7 @@ function App() {
   const [editId, setEditId] = useState(null)
   const [searchTerm, setSearchTerm] = useState("")
   const [filterStatus, setFilterStatus] = useState("All")
+  const [applyLink, setApplyLink] = useState("")
 
 
   // Fetch Jobs
@@ -38,7 +39,8 @@ function App() {
       organization,
       post,
       status,
-      last_date: lastDate
+      last_date: lastDate,
+      apply_link: applyLink
 
     })
       .then(() => {
@@ -83,7 +85,8 @@ function App() {
       organization,
       post,
       status,
-      last_date: lastDate
+      last_date: lastDate,
+      apply_link: applyLink
 
     })
       .then(() => {
@@ -94,6 +97,7 @@ function App() {
         setPost("")
         setStatus("")
         setLastDate("")
+        setApplyLink("")
 
         setEditId(null)
       })
@@ -187,6 +191,14 @@ function App() {
               className="border p-3 rounded-lg"
             />
 
+            <input
+              type="text"
+              placeholder="Apply Link"
+              value={applyLink}
+              onChange={(e) => setApplyLink(e.target.value)}
+              className="border p-3 rounded-lg"
+            />
+
           </div>
 
 
@@ -243,6 +255,15 @@ function App() {
                 <p className="text-lg">
                   {job.post}
                 </p>
+
+                <a
+                  href={job.apply_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                >
+                  Apply
+                </a>
 
                 <p className="mt-2">
                   Status:

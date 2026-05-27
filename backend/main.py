@@ -50,6 +50,7 @@ def add_job(job: JobCreate):
         post=job.post,
         status=job.status,
         last_date=job.last_date
+        apply_link=job.apply_link
     )
 
     db.add(new_job)
@@ -83,6 +84,7 @@ def get_jobs():
             "post": job.post,
             "status": job.status,
             "last_date": job.last_date
+            "apply_link": job.apply_link
         })
 
     db.close()
@@ -141,6 +143,8 @@ def update_job(job_id: int, job: JobCreate):
     existing_job.post = job.post
     existing_job.status = job.status
     existing_job.last_date = job.last_date
+    existing_job.apply_link = job.apply_link
+    
 
     db.commit()
 

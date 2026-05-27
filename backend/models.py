@@ -10,3 +10,4 @@ class Job(Base):
     post = Column(String)
     status = Column(String)
     last_date = Column(String)
+    apply_link = Column(String)

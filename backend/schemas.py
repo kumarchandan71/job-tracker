@@ -5,3 +5,4 @@ class JobCreate(BaseModel):
     post: str
     status: str
     last_date: str
+    apply_link: str
