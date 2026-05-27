@@ -50,7 +50,7 @@ def add_job(job: JobCreate):
         organization=job.organization,
         post=job.post,
         status=job.status,
-        last_date=job.last_date
+        last_date=job.last_date,
         apply_link=job.apply_link
     )
 
