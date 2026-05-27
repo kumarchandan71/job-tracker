@@ -51,6 +51,7 @@ function App() {
         setPost("")
         setStatus("")
         setLastDate("")
+        setApplyLink("")
       })
   }
 
@@ -74,6 +75,7 @@ function App() {
     setPost(job.post)
     setStatus(job.status)
     setLastDate(job.last_date)
+    setApplyLink(job.apply_link)
   }
 
 
