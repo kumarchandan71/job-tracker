@@ -58,6 +58,8 @@ def add_job(job: JobCreate):
 
     db.refresh(new_job)
 
+    db.close()
+
     return {
         "message": "Job Added Successfully"
     }
@@ -71,16 +73,21 @@ def get_jobs():
 
     jobs = db.query(models.Job).all()
 
-    return [
-        {
+    result = []
+
+    for job in jobs:
+
+        result.append({
             "id": job.id,
             "organization": job.organization,
             "post": job.post,
             "status": job.status,
             "last_date": job.last_date
-        }
-        for job in jobs
-    ]
+        })
+
+    db.close()
+
+    return result
 
 
 # Delete Job
@@ -95,6 +102,8 @@ def delete_job(job_id: int):
 
     if not job:
 
+        db.close()
+
         return {
             "message": "Job Not Found"
         }
@@ -102,6 +111,8 @@ def delete_job(job_id: int):
     db.delete(job)
 
     db.commit()
+
+    db.close()
 
     return {
         "message": "Job Deleted"
@@ -120,6 +131,8 @@ def update_job(job_id: int, job: JobCreate):
 
     if not existing_job:
 
+        db.close()
+
         return {
             "message": "Job Not Found"
         }
@@ -130,6 +143,8 @@ def update_job(job_id: int, job: JobCreate):
     existing_job.last_date = job.last_date
 
     db.commit()
+
+    db.close()
 
     return {
         "message": "Job Updated"
