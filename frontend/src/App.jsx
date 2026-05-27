@@ -18,7 +18,7 @@ function App() {
   // Fetch Jobs
   const fetchJobs = () => {
 
-    axios.get("https://job-tracker-backend-6zaw.onrender.com")
+    axios.get("https://job-tracker-backend-6zaw.onrender.com/jobs")
       .then((response) => {
         setJobs(response.data)
       })
@@ -33,7 +33,7 @@ function App() {
   // Add Job
   const addJob = () => {
 
-    axios.post("https://job-tracker-backend-6zaw.onrender.com", {
+    axios.post("https://job-tracker-backend-6zaw.onrender.com/jobs", {
 
       organization,
       post,
@@ -56,7 +56,7 @@ function App() {
   // Delete Job
   const deleteJob = (id) => {
 
-    axios.delete(`https://job-tracker-backend-6zaw.onrender.com/${id}`)
+    axios.delete(`https://job-tracker-backend-6zaw.onrender.com/jobs/${id}`)
       .then(() => {
         fetchJobs()
       })
@@ -78,7 +78,7 @@ function App() {
   // Update Job
   const updateJob = () => {
 
-    axios.put(`https://job-tracker-backend-6zaw.onrender.com/${editId}`, {
+    axios.put(`https://job-tracker-backend-6zaw.onrender.com/jobs/${editId}`, {
 
       organization,
       post,
