@@ -258,14 +258,7 @@ function App() {
                   {job.post}
                 </p>
 
-                <a
-                  href={job.apply_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                >
-                  Apply
-                </a>
+
 
                 <p className="mt-2">
                   Status:
@@ -346,7 +339,15 @@ function App() {
 
                 </p>
 
-
+                <a
+                  href={job.apply_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                >
+                  Apply
+                </a>
+                
                 <div className="flex gap-3 mt-5">
 
                   <button
