@@ -5,17 +5,22 @@ from telegram import Bot
 from database import SessionLocal
 import models
 
+import os
+from dotenv import load_dotenv
+
 from datetime import datetime
 import asyncio
+
+load_dotenv()
 
 
 # =========================
 # TELEGRAM CONFIG
 # =========================
 
-TOKEN = "8943655906:AAEE1cmLwcmdg071hL-oYTiAZI8D7aFoemU"
+TOKEN = os.getenv("BOT_TOKEN")
 
-CHAT_ID = "899793030"
+CHAT_ID = os.getenv("CHAT_ID")
 
 # =========================
 # MEMORY FOR SENT REMINDERS
