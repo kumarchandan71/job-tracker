@@ -9,28 +9,37 @@ import reminder
 from fastapi.middleware.cors import CORSMiddleware
 
 from schemas import JobCreate
-from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
+
+
+# CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://job-tracker-iota-mauve.vercel.app"],
+    allow_origins=[
+        "https://job-tracker-iota-mauve.vercel.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+
+# Create database tables
 Base.metadata.create_all(bind=engine)
 
 
+# Home Route
 @app.get("/", tags=["Home"])
 def home():
-    return {"message": "Job Tracker Backend Running"}
+
+    return {
+        "message": "Job Tracker Backend Running"
+    }
 
 
-
-
-
+# Add Job
 @app.post("/add-job", tags=["Jobs"])
 def add_job(job: JobCreate):
 
@@ -47,9 +56,14 @@ def add_job(job: JobCreate):
 
     db.commit()
 
-    return {"message": "Job Added Successfully"}
+    db.refresh(new_job)
+
+    return {
+        "message": "Job Added Successfully"
+    }
 
 
+# Get All Jobs
 @app.get("/jobs", tags=["Jobs"])
 def get_jobs():
 
@@ -57,29 +71,58 @@ def get_jobs():
 
     jobs = db.query(models.Job).all()
 
-    return jobs
+    return [
+        {
+            "id": job.id,
+            "organization": job.organization,
+            "post": job.post,
+            "status": job.status,
+            "last_date": job.last_date
+        }
+        for job in jobs
+    ]
 
 
-@app.delete("/delete-job/{job_id}")
+# Delete Job
+@app.delete("/delete-job/{job_id}", tags=["Jobs"])
 def delete_job(job_id: int):
 
     db: Session = SessionLocal()
 
-    job = db.query(models.Job).filter(models.Job.id == job_id).first()
+    job = db.query(models.Job).filter(
+        models.Job.id == job_id
+    ).first()
+
+    if not job:
+
+        return {
+            "message": "Job Not Found"
+        }
 
     db.delete(job)
 
     db.commit()
 
-    return {"message": "Job Deleted"}
+    return {
+        "message": "Job Deleted"
+    }
 
 
-@app.put("/update-job/{job_id}")
+# Update Job
+@app.put("/update-job/{job_id}", tags=["Jobs"])
 def update_job(job_id: int, job: JobCreate):
 
     db: Session = SessionLocal()
 
-    existing_job = db.query(models.Job).filter(models.Job.id == job_id).first()
+    existing_job = db.query(models.Job).filter(
+        models.Job.id == job_id
+    ).first()
+
+    if not existing_job:
+
+        return {
+            "message": "Job Not Found"
+        }
 
     existing_job.organization = job.organization
     existing_job.post = job.post
@@ -88,4 +131,6 @@ def update_job(job_id: int, job: JobCreate):
 
     db.commit()
 
-    return {"message": "Job Updated"}
+    return {
+        "message": "Job Updated"
+    }
