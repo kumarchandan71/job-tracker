@@ -50,14 +50,14 @@ def add_job(job: JobCreate):
     try:
 
         new_job = models.Job(
-            organization=job.organization,
-            post=job.post,
-            status=job.status,
-            last_date=job.last_date,
-            apply_link=job.apply_link,
-            notes=job.notes,
-            is_pinned=job.is_pinned,
-            priority=job.priority
+            organization=job.organization or "",
+            post=job.post or "",
+            status=job.status or "",
+            last_date=job.last_date or "",
+            apply_link=job.apply_link or "",
+            notes=job.notes or "",
+            is_pinned=job.is_pinned if job.is_pinned is not None else False,
+            priority=job.priority or ""
         )
 
         db.add(new_job)
@@ -85,14 +85,14 @@ def add_multiple_jobs(jobs: List[JobCreate]):
         for job in jobs:
 
             new_job = models.Job(
-                organization=job.organization,
-                post=job.post,
-                status=job.status,
-                last_date=job.last_date,
-                apply_link=job.apply_link,
-                notes=job.notes,
-                is_pinned=job.is_pinned,
-                priority=job.priority
+                organization=job.organization or "",
+                post=job.post or "",
+                status=job.status or "",
+                last_date=job.last_date or "",
+                apply_link=job.apply_link or "",
+                notes=job.notes or "",
+                is_pinned=job.is_pinned if job.is_pinned is not None else False,
+                priority=job.priority or ""
             )
 
             db.add(new_job)
@@ -123,14 +123,14 @@ def get_jobs():
 
             result.append({
                 "id": job.id,
-                "organization": job.organization,
-                "post": job.post,
-                "status": job.status,
-                "last_date": job.last_date,
-                "apply_link": job.apply_link,
-                "notes": job.notes,
+                "organization": job.organization or "",
+                "post": job.post or "",
+                "status": job.status or "",
+                "last_date": job.last_date or "",
+                "apply_link": job.apply_link or "",
+                "notes": job.notes or "",
                 "is_pinned": job.is_pinned,
-                "priority": job.priority
+                "priority": job.priority or ""
             })
 
         return result
@@ -187,14 +187,20 @@ def update_job(job_id: int, job: JobCreate):
                 "message": "Job Not Found"
             }
 
-        existing_job.organization = job.organization
-        existing_job.post = job.post
-        existing_job.status = job.status
-        existing_job.last_date = job.last_date
-        existing_job.apply_link = job.apply_link
-        existing_job.notes = job.notes
-        existing_job.is_pinned = job.is_pinned
-        existing_job.priority = job.priority
+        existing_job.organization = job.organization or ""
+        existing_job.post = job.post or ""
+        existing_job.status = job.status or ""
+        existing_job.last_date = job.last_date or ""
+        existing_job.apply_link = job.apply_link or ""
+        existing_job.notes = job.notes or ""
+
+        existing_job.is_pinned = (
+            job.is_pinned
+            if job.is_pinned is not None
+            else False
+        )
+
+        existing_job.priority = job.priority or ""
 
         db.commit()
 
