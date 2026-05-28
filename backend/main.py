@@ -27,7 +27,7 @@ app.add_middleware(
 
 
 # Create database tables
-Base.metadata.drop_all(bind=engine)
+#Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 
 
@@ -84,7 +84,7 @@ def get_jobs():
             "organization": job.organization,
             "post": job.post,
             "status": job.status,
-            "last_date": job.last_date
+            "last_date": job.last_date,
             "apply_link": job.apply_link
         })
 
