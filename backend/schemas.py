@@ -6,3 +6,4 @@ class JobCreate(BaseModel):
     status: str
     last_date: str
     apply_link: str
+    notes: str | None = None

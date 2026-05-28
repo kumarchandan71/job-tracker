@@ -14,6 +14,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("")
   const [filterStatus, setFilterStatus] = useState("All")
   const [applyLink, setApplyLink] = useState("")
+  const [notes, setNotes] = useState("")
 
 
   // Fetch Jobs
@@ -40,7 +41,8 @@ function App() {
       post,
       status,
       last_date: lastDate,
-      apply_link: applyLink
+      apply_link: applyLink,
+      notes: notes
 
     })
       .then(() => {
@@ -52,6 +54,7 @@ function App() {
         setStatus("")
         setLastDate("")
         setApplyLink("")
+        setNotes("")
       })
   }
 
@@ -76,6 +79,7 @@ function App() {
     setStatus(job.status)
     setLastDate(job.last_date)
     setApplyLink(job.apply_link)
+    setNotes(job.notes)
   }
 
 
@@ -88,7 +92,8 @@ function App() {
       post,
       status,
       last_date: lastDate,
-      apply_link: applyLink
+      apply_link: applyLink,
+      notes: notes
 
     })
       .then(() => {
@@ -100,6 +105,7 @@ function App() {
         setStatus("")
         setLastDate("")
         setApplyLink("")
+        setNotes("")
 
         setEditId(null)
       })
@@ -201,6 +207,13 @@ function App() {
               className="border p-3 rounded-lg"
             />
 
+            <textarea
+              placeholder="Notes"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              className="border p-3 rounded-lg"
+            ></textarea>
+
           </div>
 
 
@@ -301,6 +314,13 @@ function App() {
                   </span>
                 </p>
 
+                
+                <p className="mt-2">
+                  Notes:
+                  <span className="font-semibold">
+                    {" "}{job.notes || "No Notes"}
+                  </span>
+                </p>
 
                 <p className="mt-3">
 

@@ -11,3 +11,5 @@ class Job(Base):
     status = Column(String)
     last_date = Column(String)
     apply_link = Column(String)
+
+    notes = Column(String, nullable=True)

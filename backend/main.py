@@ -27,7 +27,7 @@ app.add_middleware(
 
 
 # Create database tables
-Base.metadata.drop_all(bind=engine)
+#Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 
 
@@ -51,7 +51,8 @@ def add_job(job: JobCreate):
         post=job.post,
         status=job.status,
         last_date=job.last_date,
-        apply_link=job.apply_link
+        apply_link=job.apply_link,
+        notes=job.notes
     )
 
     db.add(new_job)
@@ -85,7 +86,8 @@ def get_jobs():
             "post": job.post,
             "status": job.status,
             "last_date": job.last_date,
-            "apply_link": job.apply_link
+            "apply_link": job.apply_link,
+            "notes": job.notes
         })
 
     db.close()
@@ -145,6 +147,7 @@ def update_job(job_id: int, job: JobCreate):
     existing_job.status = job.status
     existing_job.last_date = job.last_date
     existing_job.apply_link = job.apply_link
+    existing_job.notes = job.notes
     
 
     db.commit()
