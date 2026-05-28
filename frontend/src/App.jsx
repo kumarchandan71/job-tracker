@@ -310,7 +310,10 @@ function App() {
                 <p className="mt-2">
                   Last Date:
                   <span className="font-semibold">
-                    {" "}{job.last_date}
+                    {" "}
+                    {new Date(job.last_date)
+                      .toLocaleDateString("en-GB")
+                      .replace(/\//g, "-")}
                   </span>
                 </p>
 
