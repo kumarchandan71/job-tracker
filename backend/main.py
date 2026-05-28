@@ -28,7 +28,7 @@ app.add_middleware(
 
 
 # Create database tables
-#Base.metadata.drop_all(bind=engine)
+# Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 
 
@@ -47,36 +47,7 @@ def add_job(job: JobCreate):
 
     db: Session = SessionLocal()
 
-    new_job = models.Job(
-        organization=job.organization,
-        post=job.post,
-        status=job.status,
-        last_date=job.last_date,
-        apply_link=job.apply_link,
-        notes=job.notes,
-        is_pinned=job.is_pinned,
-        priority=job.priority
-    )
-
-    db.add(new_job)
-
-    db.commit()
-
-    db.refresh(new_job)
-
-    db.close()
-
-    return {
-        "message": "Job Added Successfully"
-    }
-
-# Add Multiple Jobs
-@app.post("/add-multiple-jobs", tags=["Jobs"])
-def add_multiple_jobs(jobs: List[JobCreate]):
-
-    db: Session = SessionLocal()
-
-    for job in jobs:
+    try:
 
         new_job = models.Job(
             organization=job.organization,
@@ -91,13 +62,50 @@ def add_multiple_jobs(jobs: List[JobCreate]):
 
         db.add(new_job)
 
-    db.commit()
+        db.commit()
 
-    db.close()
+        db.refresh(new_job)
 
-    return {
-        "message": "Multiple Jobs Added Successfully"
-    }
+        return {
+            "message": "Job Added Successfully"
+        }
+
+    finally:
+        db.close()
+
+
+# Add Multiple Jobs
+@app.post("/add-multiple-jobs", tags=["Jobs"])
+def add_multiple_jobs(jobs: List[JobCreate]):
+
+    db: Session = SessionLocal()
+
+    try:
+
+        for job in jobs:
+
+            new_job = models.Job(
+                organization=job.organization,
+                post=job.post,
+                status=job.status,
+                last_date=job.last_date,
+                apply_link=job.apply_link,
+                notes=job.notes,
+                is_pinned=job.is_pinned,
+                priority=job.priority
+            )
+
+            db.add(new_job)
+
+        db.commit()
+
+        return {
+            "message": "Multiple Jobs Added Successfully"
+        }
+
+    finally:
+        db.close()
+
 
 # Get All Jobs
 @app.get("/jobs", tags=["Jobs"])
@@ -105,27 +113,30 @@ def get_jobs():
 
     db: Session = SessionLocal()
 
-    jobs = db.query(models.Job).all()
+    try:
 
-    result = []
+        jobs = db.query(models.Job).all()
 
-    for job in jobs:
+        result = []
 
-        result.append({
-            "id": job.id,
-            "organization": job.organization,
-            "post": job.post,
-            "status": job.status,
-            "last_date": job.last_date,
-            "apply_link": job.apply_link,
-            "notes": job.notes,
-            "is_pinned": job.is_pinned,
-            "priority": job.priority
-        })
+        for job in jobs:
 
-    db.close()
+            result.append({
+                "id": job.id,
+                "organization": job.organization,
+                "post": job.post,
+                "status": job.status,
+                "last_date": job.last_date,
+                "apply_link": job.apply_link,
+                "notes": job.notes,
+                "is_pinned": job.is_pinned,
+                "priority": job.priority
+            })
 
-    return result
+        return result
+
+    finally:
+        db.close()
 
 
 # Delete Job
@@ -134,27 +145,28 @@ def delete_job(job_id: int):
 
     db: Session = SessionLocal()
 
-    job = db.query(models.Job).filter(
-        models.Job.id == job_id
-    ).first()
+    try:
 
-    if not job:
+        job = db.query(models.Job).filter(
+            models.Job.id == job_id
+        ).first()
 
-        db.close()
+        if not job:
+
+            return {
+                "message": "Job Not Found"
+            }
+
+        db.delete(job)
+
+        db.commit()
 
         return {
-            "message": "Job Not Found"
+            "message": "Job Deleted"
         }
 
-    db.delete(job)
-
-    db.commit()
-
-    db.close()
-
-    return {
-        "message": "Job Deleted"
-    }
+    finally:
+        db.close()
 
 
 # Update Job
@@ -163,33 +175,32 @@ def update_job(job_id: int, job: JobCreate):
 
     db: Session = SessionLocal()
 
-    existing_job = db.query(models.Job).filter(
-        models.Job.id == job_id
-    ).first()
+    try:
 
-    if not existing_job:
+        existing_job = db.query(models.Job).filter(
+            models.Job.id == job_id
+        ).first()
 
-        db.close()
+        if not existing_job:
+
+            return {
+                "message": "Job Not Found"
+            }
+
+        existing_job.organization = job.organization
+        existing_job.post = job.post
+        existing_job.status = job.status
+        existing_job.last_date = job.last_date
+        existing_job.apply_link = job.apply_link
+        existing_job.notes = job.notes
+        existing_job.is_pinned = job.is_pinned
+        existing_job.priority = job.priority
+
+        db.commit()
 
         return {
-            "message": "Job Not Found"
+            "message": "Job Updated"
         }
 
-    existing_job.organization = job.organization
-    existing_job.post = job.post
-    existing_job.status = job.status
-    existing_job.last_date = job.last_date
-    existing_job.apply_link = job.apply_link
-    existing_job.notes = job.notes
-
-    existing_job.is_pinned = job.is_pinned
-    existing_job.priority = job.priority
-    
-
-    db.commit()
-
-    db.close()
-
-    return {
-        "message": "Job Updated"
-    }
+    finally:
+        db.close()
