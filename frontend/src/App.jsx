@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
+import myphoto from "./assets/myphoto.jpg"
 
 function App() {
 
@@ -177,6 +178,12 @@ function App() {
       <div className="max-w-5xl mx-auto">
 
       <div className="text-center mb-10">
+
+        <img
+          src={myphoto}
+          alt="Chandan"
+          className="w-28 h-28 rounded-full mx-auto mb-4 object-cover border-4 border-blue-500"
+        />
 
         <h1 className="text-5xl font-bold">
           Chandan's Career Dashboard
