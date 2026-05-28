@@ -15,6 +15,8 @@ function App() {
   const [filterStatus, setFilterStatus] = useState("All")
   const [applyLink, setApplyLink] = useState("")
   const [notes, setNotes] = useState("")
+  const [isPinned, setIsPinned] = useState(false)
+  const [priority, setPriority] = useState("Medium")
 
 
   // Fetch Jobs
@@ -42,7 +44,9 @@ function App() {
       status,
       last_date: lastDate,
       apply_link: applyLink,
-      notes: notes
+      notes: notes,
+      is_pinned: isPinned,
+      priority: priority
 
     })
       .then(() => {
@@ -55,6 +59,8 @@ function App() {
         setLastDate("")
         setApplyLink("")
         setNotes("")
+        setIsPinned(false)
+        setPriority("Medium")
       })
   }
 
@@ -80,6 +86,10 @@ function App() {
     setLastDate(job.last_date)
     setApplyLink(job.apply_link)
     setNotes(job.notes)
+
+    setIsPinned(job.is_pinned)
+    setPriority(job.priority)
+
   }
 
 
@@ -93,7 +103,11 @@ function App() {
       status,
       last_date: lastDate,
       apply_link: applyLink,
-      notes: notes
+      notes: notes,
+
+
+      is_pinned: isPinned,
+      priority: priority
 
     })
       .then(() => {
@@ -106,6 +120,8 @@ function App() {
         setLastDate("")
         setApplyLink("")
         setNotes("")
+        setIsPinned(false)
+        setPriority("Medium")
 
         setEditId(null)
       })
@@ -214,6 +230,33 @@ function App() {
               className="border p-3 rounded-lg"
             ></textarea>
 
+            <select
+              value={priority}
+              onChange={(e) => setPriority(e.target.value)}
+              className="border p-3 rounded-lg"
+            >
+
+              <option value="High">High Priority</option>
+
+              <option value="Medium">Medium Priority</option>
+
+              <option value="Low">Low Priority</option>
+
+            </select>
+
+            <label className="flex items-center gap-2">
+
+              <input
+                type="checkbox"
+                checked={isPinned}
+                onChange={(e) => setIsPinned(e.target.checked)}
+              />
+
+              Pin Job
+
+            </label>
+
+
           </div>
 
 
@@ -256,6 +299,8 @@ function App() {
               return matchesSearch && matchesFilter
             })
             
+            .sort((a, b) => b.is_pinned - a.is_pinned)
+            
             .map((job) => (
 
               <div
@@ -263,9 +308,39 @@ function App() {
                 className="bg-white p-6 rounded-xl shadow-md"
               >
 
-                <h2 className="text-2xl font-bold mb-2">
+                <h2 className="text-2xl font-bold mb-2 flex items-center gap-2">
+
+                  {job.is_pinned && "📌"}
+
                   {job.organization}
+
                 </h2>
+
+                <p className="mt-2">
+
+                  Priority:
+
+                  <span
+                    className={`font-semibold px-3 py-1 rounded-lg ml-2 text-white
+
+                      ${
+                        job.priority === "High"
+                          ? "bg-red-600"
+
+                          : job.priority === "Medium"
+                            ? "bg-yellow-500"
+
+                            : "bg-green-600"
+                      }
+
+                    `}
+                  >
+
+                    {job.priority}
+
+                  </span>
+
+                </p>
 
                 <p className="text-lg">
                   {job.post}

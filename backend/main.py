@@ -52,7 +52,9 @@ def add_job(job: JobCreate):
         status=job.status,
         last_date=job.last_date,
         apply_link=job.apply_link,
-        notes=job.notes
+        notes=job.notes,
+        is_pinned=job.is_pinned,
+        priority=job.priority
     )
 
     db.add(new_job)
@@ -87,7 +89,9 @@ def get_jobs():
             "status": job.status,
             "last_date": job.last_date,
             "apply_link": job.apply_link,
-            "notes": job.notes
+            "notes": job.notes,
+            "is_pinned": job.is_pinned,
+            "priority": job.priority
         })
 
     db.close()
@@ -148,6 +152,9 @@ def update_job(job_id: int, job: JobCreate):
     existing_job.last_date = job.last_date
     existing_job.apply_link = job.apply_link
     existing_job.notes = job.notes
+    
+    existing_job.is_pinned = job.is_pinned
+    existing_job.priority = job.priority
     
 
     db.commit()

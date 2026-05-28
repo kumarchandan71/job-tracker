@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Boolean
 from database import Base
 
 class Job(Base):
@@ -11,5 +11,7 @@ class Job(Base):
     status = Column(String)
     last_date = Column(String)
     apply_link = Column(String)
+    is_pinned = Column(Boolean, default=False)
+    priority = Column(String, default="Medium")
 
     notes = Column(String, nullable=True)
