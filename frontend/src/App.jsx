@@ -17,6 +17,7 @@ function App() {
   const [notes, setNotes] = useState("")
   const [isPinned, setIsPinned] = useState(false)
   const [priority, setPriority] = useState("Medium")
+  
 
 
   // Fetch Jobs
@@ -68,9 +69,36 @@ function App() {
   // Delete Job
   const deleteJob = (id) => {
 
-    axios.delete(`https://job-tracker-backend-6zaw.onrender.com/delete-job/${id}`)
+    const num1 = Math.floor(Math.random() * 10) + 1
+
+    const num2 = Math.floor(Math.random() * 10) + 1
+
+    const operations = ["+", "-", "*"]
+
+    const operation =
+      operations[Math.floor(Math.random() * operations.length)]
+
+    const userAnswer = prompt(
+      `Solve to confirm deletion:\n\n${num1} ${operation} ${num2} = ?`
+    )
+
+    // Master Delete Key
+    if (userAnswer !== "71") {
+
+      alert("Wrong answer. Deletion cancelled.")
+
+      return
+    }
+
+    axios.delete(
+      `https://job-tracker-backend-6zaw.onrender.com/delete-job/${id}`
+    )
+
       .then(() => {
+
         fetchJobs()
+
+        alert("Job deleted successfully")
       })
   }
 
@@ -300,7 +328,7 @@ function App() {
             })
             
             .sort((a, b) => b.is_pinned - a.is_pinned)
-            
+
             .map((job) => (
 
               <div
