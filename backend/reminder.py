@@ -70,9 +70,17 @@ def check_deadlines():
                     "%Y-%m-%d"
                 )
 
-                today = datetime.now()
+                # Current date only
+                today = datetime.now().date()
 
-                days_left = (last_date - today).days
+                # Days remaining
+                days_left = (
+                    last_date.date() - today
+                ).days
+
+                # Skip expired jobs
+                if days_left < 0:
+                    continue
 
 
                 # Reminder days
@@ -99,7 +107,9 @@ def check_deadlines():
 
                         else:
 
-                            reminder_text = f"⚠ Only {days_left} days left!"
+                            reminder_text = (
+                                f"⚠ Only {days_left} days left!"
+                            )
 
 
                         # Final Telegram Message
