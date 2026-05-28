@@ -9,6 +9,7 @@ import reminder
 from fastapi.middleware.cors import CORSMiddleware
 
 from schemas import JobCreate
+from typing import List
 
 
 app = FastAPI()
@@ -69,6 +70,34 @@ def add_job(job: JobCreate):
         "message": "Job Added Successfully"
     }
 
+# Add Multiple Jobs
+@app.post("/add-multiple-jobs", tags=["Jobs"])
+def add_multiple_jobs(jobs: List[JobCreate]):
+
+    db: Session = SessionLocal()
+
+    for job in jobs:
+
+        new_job = models.Job(
+            organization=job.organization,
+            post=job.post,
+            status=job.status,
+            last_date=job.last_date,
+            apply_link=job.apply_link,
+            notes=job.notes,
+            is_pinned=job.is_pinned,
+            priority=job.priority
+        )
+
+        db.add(new_job)
+
+    db.commit()
+
+    db.close()
+
+    return {
+        "message": "Multiple Jobs Added Successfully"
+    }
 
 # Get All Jobs
 @app.get("/jobs", tags=["Jobs"])
