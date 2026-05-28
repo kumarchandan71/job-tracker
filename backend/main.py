@@ -27,7 +27,7 @@ app.add_middleware(
 
 
 # Create database tables
-#Base.metadata.drop_all(bind=engine)
+Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 
 
@@ -152,7 +152,7 @@ def update_job(job_id: int, job: JobCreate):
     existing_job.last_date = job.last_date
     existing_job.apply_link = job.apply_link
     existing_job.notes = job.notes
-    
+
     existing_job.is_pinned = job.is_pinned
     existing_job.priority = job.priority
     
