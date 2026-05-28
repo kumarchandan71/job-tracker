@@ -342,7 +342,36 @@ function App() {
               return matchesSearch && matchesFilter
             })
             
-            .sort((a, b) => b.is_pinned - a.is_pinned)
+            .sort((a, b) => {
+
+              // Pinned jobs first
+              if (a.is_pinned && !b.is_pinned) return -1
+
+              if (!a.is_pinned && b.is_pinned) return 1
+
+              // Handle empty dates
+              if (!a.last_date && b.last_date) return 1
+
+              if (a.last_date && !b.last_date) return -1
+
+              if (!a.last_date && !b.last_date) return 0
+
+              // Today's date
+              const today = new Date()
+
+              // Convert to Date objects
+              const dateA = new Date(a.last_date)
+
+              const dateB = new Date(b.last_date)
+
+              // Days difference
+              const diffA = dateA - today
+
+              const diffB = dateB - today
+
+              // Smaller days first
+              return diffA - diffB
+            })
 
             .map((job) => (
 
