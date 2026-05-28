@@ -182,11 +182,11 @@ function App() {
         <img
           src={myphoto}
           alt="Chandan"
-          className="w-28 h-28 rounded-full mx-auto mb-4 object-cover border-4 border-blue-500"
+          className="w-25 h-30 rounded-full mx-auto mb-4 object-cover border-4 border-blue-500"
         />
 
-        <h1 className="text-5xl font-bold">
-          Chandan's Career Dashboard
+        <h1 className="text-4xl font-bold">
+          Smart Job Tracker
         </h1>
 
         <p className="text-gray-500 mt-2">
