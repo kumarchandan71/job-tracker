@@ -24,7 +24,7 @@ function App() {
   // Fetch Jobs
   const fetchJobs = () => {
 
-    axios.get("https://job-tracker-backend-6zaw.onrender.com/jobs")
+    axios.get("https://job-tracker-production-a947.up.railway.app/jobs")
       .then((response) => {
         setJobs(response.data)
       })
@@ -39,7 +39,7 @@ function App() {
   // Add Job
   const addJob = () => {
 
-    axios.post("https://job-tracker-backend-6zaw.onrender.com/add-job", {
+    axios.post("https://job-tracker-production-a947.up.railway.app/add-job", {
 
       organization,
       post,
@@ -92,7 +92,7 @@ function App() {
     }
 
     axios.delete(
-      `https://job-tracker-backend-6zaw.onrender.com/delete-job/${id}`
+      `https://job-tracker-production-a947.up.railway.app/delete-job/${id}`
     )
 
       .then(() => {
@@ -125,7 +125,7 @@ function App() {
   // Update Job
   const updateJob = () => {
 
-    axios.put(`https://job-tracker-backend-6zaw.onrender.com/update-job/${editId}`, {
+    axios.put(`https://job-tracker-production-a947.up.railway.app/update-job/${editId}`, {
 
       organization,
       post,
